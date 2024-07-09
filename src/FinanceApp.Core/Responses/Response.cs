@@ -17,7 +17,7 @@ public class Response<T>
     public Response() => _statusCode = Configuration.DefaultStatusCodeResponse;
 
 
-    public Response(T? data, string? message = null, int code = Configuration.DefaultStatusCodeResponse)
+    public Response(T? data, int code = Configuration.DefaultStatusCodeResponse, string? message = null)
     {
         _statusCode = code;
         Data = data;

@@ -24,7 +24,7 @@ public class PagedResponse<T> : Response<T>
         PageSize = pageSize;
     }
 
-    public PagedResponse(T? data, int code = Configuration.DefaultStatusCodeResponse, string? message = null):base(data,message,code)
+    public PagedResponse(T? data, int code = Configuration.DefaultStatusCodeResponse, string? message = null):base(data,code, message)
     {
         Data = data;
 
