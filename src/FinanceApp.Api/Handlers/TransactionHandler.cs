@@ -1,6 +1,8 @@
 ﻿using FinanceApp.Api.Data;
 using FinanceApp.Core;
+using FinanceApp.Core.Exceptions;
 using FinanceApp.Core.Handlers;
+using FinanceApp.Core.Libraries.Extensions;
 using FinanceApp.Core.Requests.Transactions;
 using FinanceApp.Core.Responses;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +34,7 @@ public class TransactionHandler(AppDbContext context) : ITransactionHandler
         }
         catch (Exception)
         {
-            return new Response<Transaction?>(null, 500, "Couldn't create the category.");
+            return new Response<Transaction?>(null, 500, "Couldn't create transaction.");
         }
     }
 
@@ -63,9 +65,7 @@ public class TransactionHandler(AppDbContext context) : ITransactionHandler
     public async Task<Response<Transaction?>> GetByIdAsync(GetTransactionByIdRequest request)
     {
         try
-        {
-            var startData =
-            
+        {           
             var transaction = await context.Transactions
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.Id && x.UserId == request.UserId);
@@ -89,21 +89,41 @@ public class TransactionHandler(AppDbContext context) : ITransactionHandler
     {
         try
         {
-            var transaction = await context.Transactions
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == request. && x.UserId == request.UserId);
+            request.StartDate ??= DateTime.Now.GetFirstDayOfMonth();
+            request.EndDate ??= DateTime.Now.GetLastDayOfMonth();
 
-            if (transaction is null)
+            if(request.StartDate < request.EndDate) return new PagedResponse<List<Transaction>?>(null, 404, "Date providade are not valid.");
+
+            var query = context.Transactions
+                .AsNoTracking()
+                .Where(x => x.CreatedAt >= request.StartDate
+                && request.EndDate <= request.EndDate
+                && x.UserId == request.UserId)
+                .OrderBy(t=>t.CreatedAt);
+
+
+            var transactions = await query
+                .Skip(request.PageSize * (request.PageNumber - 1))
+                .Take(request.PageSize)
+                .ToListAsync();
+
+            var count = transactions.Count();
+
+            if (transactions is null)
             {
-                return new Response<Transaction?>(null, 404, "Transaction not found.");
+                return new PagedResponse<List<Transaction>?>(null, 404, "Transaction not found.");
             }
 
-            return new Response<Transaction?>(transaction);
+            return new PagedResponse<List<Transaction>?>(transactions,201, transactions.Any() ? "Transactions founded" : "Wasn't found any transaction at this date." );
 
+        }
+        catch (DateTimeException)
+        {
+            return new PagedResponse<List<Transaction>?>(null, 500, "Couldn't calculate the date.");
         }
         catch (Exception)
         {
-            return new Response<Transaction?>(null, 500, "Couldn't get the transaction.");
+            return new PagedResponse<List<Transaction>?>(null, 500, "Couldn't get the transactions.");
         }
     }
 

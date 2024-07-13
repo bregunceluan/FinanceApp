@@ -28,7 +28,7 @@ public class CategoryHandler(AppDbContext context) : ICategoryHandler
             return new Response<Category?>(category, 201, "Category successfull created.");
 
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return new Response<Category?>(null, 500, "Couldn't create the category.");
         }
@@ -52,14 +52,14 @@ public class CategoryHandler(AppDbContext context) : ICategoryHandler
             return new Response<Category?>(category, message: "Category successful deleted.");
 
         }
-        catch (Exception e)
+        catch (Exception)
         {
             //todo log with serilog
             return new Response<Category?>(null, 500, "Couldn't delete the category.");
         }
     }
 
-    public async Task<PagedResponse<List<Category>>> GetAllAsync(GetAllCategoriesRequest request)
+    public async Task<PagedResponse<List<Category?>>> GetAllAsync(GetAllCategoriesRequest request)
     {
         try
         {
@@ -79,7 +79,7 @@ public class CategoryHandler(AppDbContext context) : ICategoryHandler
         }
         catch (Exception)
         {
-            return new PagedResponse<List<Category>>(null, 500, "Failed to obtain the categories.");
+            return new PagedResponse<List<Category?>>(null, 500, "Failed to obtain the categories.");
         }
     }
 
@@ -100,7 +100,7 @@ public class CategoryHandler(AppDbContext context) : ICategoryHandler
             return new Response<Category?>(category);
 
         }
-        catch (Exception e)
+        catch (Exception)
         {
             //todo log with serilog
             return new Response<Category?>(null, 500, "Couldn't find the category.");
@@ -128,7 +128,7 @@ public class CategoryHandler(AppDbContext context) : ICategoryHandler
             return new Response<Category?>(category, message: "Category successful created.");
 
         }
-        catch (Exception e)
+        catch (Exception)
         {
             //todo log with serilog
             return new Response<Category?>(null, 500, "Couldn't update the category.");

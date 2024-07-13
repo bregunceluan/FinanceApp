@@ -13,7 +13,7 @@ namespace FinanceApp.Api.Endpoints.Categories
             .Produces<Response<Category?>>()
             .WithName("Categories: Create")
             .WithSummary("Create a new category.")
-            .WithDescription("Creation of a new category")
+            .WithDescription("Creation of a new category.")
             .WithOrder(1);
 
         public static async Task<IResult> HandleAsync(ICategoryHandler handler,CreateCategoryRequest request)
@@ -25,7 +25,7 @@ namespace FinanceApp.Api.Endpoints.Categories
                 return Results.Created($"/{response.Data?.Id}",response);
             }
 
-            return Results.BadRequest(response.Data);
+            return Results.BadRequest(response);
         }
     }
 }
