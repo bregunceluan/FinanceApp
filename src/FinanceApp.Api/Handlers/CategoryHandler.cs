@@ -65,7 +65,7 @@ public class CategoryHandler(AppDbContext context) : ICategoryHandler
         {
             var query = context.Categories
                 .AsNoTracking()
-                .Where(c => c.UserId == request.UserId);
+                .Where(c => c.UserId == "luan@gmail.com");
 
             var categories = await query
                 .Skip(request.PageSize * (request.PageNumber - 1))

@@ -31,9 +31,9 @@ public class GetAllCategoriesEndpoint : IEndpoint
 
         if (response.IsSuccess)
         {
-            return Results.Ok(response.Data);
+            return Results.Ok(response);
         }
 
-        return Results.BadRequest(response.Data);
+        return Results.BadRequest(response);
     }
 }
