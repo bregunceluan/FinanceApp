@@ -11,11 +11,11 @@ namespace FinanceApp.Api.Endpoints.Transactions;
 public class CreateTransactionEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app) => app.MapPost("/", HandleAsync)
-    .Produces<Response<Transaction>>()
+    .Produces<Response<Transaction?>>()
     .WithName("Transactions: Create")
     .WithSummary("Create a new transaction.")
     .WithDescription("Creation of a new transaction.")
-    .WithOrder(4);
+    .WithOrder(1);
 
 
     public static async Task<IResult> HandleAsync(ITransactionHandler handler, CreateTransactionRequest request)

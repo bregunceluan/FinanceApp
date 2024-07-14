@@ -92,7 +92,7 @@ public class TransactionHandler(AppDbContext context) : ITransactionHandler
             request.StartDate ??= DateTime.Now.GetFirstDayOfMonth();
             request.EndDate ??= DateTime.Now.GetLastDayOfMonth();
 
-            if(request.StartDate < request.EndDate) return new PagedResponse<List<Transaction>?>(null, 404, "Date providade are not valid.");
+            if(request.StartDate > request.EndDate) return new PagedResponse<List<Transaction>?>(null, 404, "Date providade are not valid.");
 
             var query = context.Transactions
                 .AsNoTracking()

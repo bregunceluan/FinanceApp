@@ -1,23 +1,37 @@
 ﻿using FinanceApp.Api.Common.Api;
 using FinanceApp.Core.Handlers;
+using FinanceApp.Core.Libraries.Consts;
 using FinanceApp.Core.Requests.Transactions;
 using FinanceApp.Core.Responses;
+using Microsoft.AspNetCore.Mvc;
 using System.Transactions;
 
 namespace FinanceApp.Api.Endpoints.Transactions;
 
 public class GetTransactionByPeriodEndpoint : IEndpoint
 {
-    public static void Map(IEndpointRouteBuilder app) => app.MapPost("/", HandleAsync)
+    public static void Map(IEndpointRouteBuilder app) => app.MapGet("/", HandleAsync)
     .Produces<PagedResponse<List<Transaction>>>()
     .WithName("Transactions: Get Transaction By Period")
     .WithSummary("Get transactions by a period of date.")
     .WithDescription("Get transactions by a period of date.")
-    .WithOrder(1);
+    .WithOrder(5);
 
-    public static async Task<IResult> HandleAsync(ITransactionHandler handler, GetTransactionByPeriodRequest request)
+    public static async Task<IResult> HandleAsync(
+        ITransactionHandler handler, 
+        [FromQuery] DateTime? startDate = null,
+        [FromQuery] DateTime? endDate = null, 
+        [FromQuery] int pageNumber = Configuration.DefaultPageNumber,
+        [FromQuery] int pageSize = Configuration.DefaultPageSize)
     {
-        request.UserId = "luan@gmail.com";
+        var request = new GetTransactionByPeriodRequest()
+        {
+            UserId = "luan@gmail.com",
+            StartDate = startDate,
+            EndDate = endDate,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
 
         var response = await handler.GetByPeriodAsync(request);
 

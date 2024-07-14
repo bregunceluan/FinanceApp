@@ -9,6 +9,6 @@ namespace FinanceApp.Core.Requests.Transactions;
 
 public class DeleteTransactionRequest : Request
 {
-    [Required(ErrorMessage ="Invalid id")]
+    [Required]
     public long Id { get; set; } 
 }

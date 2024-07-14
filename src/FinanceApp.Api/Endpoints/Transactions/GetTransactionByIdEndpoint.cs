@@ -14,7 +14,7 @@ public class GetTransactionByIdEndpoint : IEndpoint
             .WithName("Transactions: Get By Id")
             .WithSummary("Get a transaction by id.")
             .WithDescription("Retrieve a transaction by id")
-            .WithOrder(3)
+            .WithOrder(4)
             .Produces<Response<Transaction?>>();
 
     public static async Task<IResult> HandleAsync(ITransactionHandler handler, long id)

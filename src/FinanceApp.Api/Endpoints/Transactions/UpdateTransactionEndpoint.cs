@@ -10,11 +10,11 @@ namespace FinanceApp.Api.Endpoints.Transactions;
 public class UpdateTransactionEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
-        => app.MapGet("/{id}", HandleAsync)
+        => app.MapPut("/{id}", HandleAsync)
             .WithName("Transactions: Update a transaction")
             .WithSummary("Update a transaction by id.")
             .WithDescription("Retrieve a transaction by id and update it.")
-            .WithOrder(5)
+            .WithOrder(2)
             .Produces<Response<Transaction?>>();
 
     public static async Task<IResult> HandleAsync(ITransactionHandler handler, UpdateTransactionRequest request, long id)

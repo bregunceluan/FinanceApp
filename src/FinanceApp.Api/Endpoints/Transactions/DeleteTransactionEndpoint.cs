@@ -4,17 +4,20 @@ using FinanceApp.Core.Handlers;
 using FinanceApp.Core.Requests.Categories;
 using FinanceApp.Core.Requests.Transactions;
 using FinanceApp.Core.Responses;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceApp.Api.Endpoints.Transactions;
 
 public class DeleteTransactionEndpoint : IEndpoint
 {
-    public static void Map(IEndpointRouteBuilder app) => app.MapDelete("/", HandleAsync)
-    .Produces<Response<Transaction>>()
+    public static void Map(IEndpointRouteBuilder app)
+        => app.MapDelete("/{id}", HandleAsync)
     .WithName("Transactions: Delete")
     .WithSummary("Delete a transaction.")
     .WithDescription("Deletion of a transaction.")
-    .WithOrder(2);
+    .WithOrder(3)
+    .Produces<Response<Transaction?>>();
+
     public static async Task<IResult> HandleAsync(ITransactionHandler handler, long id)
     {
         var request = new DeleteTransactionRequest
