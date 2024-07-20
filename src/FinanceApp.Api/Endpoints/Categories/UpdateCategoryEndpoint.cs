@@ -1,8 +1,10 @@
 ﻿using FinanceApp.Api.Common.Api;
+using FinanceApp.Api.Models;
 using FinanceApp.Core;
 using FinanceApp.Core.Handlers;
 using FinanceApp.Core.Requests.Categories;
 using FinanceApp.Core.Responses;
+using System.Security.Claims;
 
 namespace FinanceApp.Api.Endpoints.Categories;
 
@@ -16,10 +18,10 @@ public class UpdateCategoryEndpoint : IEndpoint
             .WithOrder(2);
 
 
-    public static async Task<IResult> HandleAsync(ICategoryHandler handler, UpdateCategoryRequest request, long id)
+    public static async Task<IResult> HandleAsync(ClaimsPrincipal user, ICategoryHandler handler, UpdateCategoryRequest request, long id)
     {
         request.Id = id;
-        request.UserId = "luan@gmail.com";
+        request.UserId = user.Identity?.Name ?? string.Empty;
 
         var response = await handler.UpdateAsync(request);
 

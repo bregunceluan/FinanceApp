@@ -5,6 +5,7 @@ using FinanceApp.Core.Libraries.Consts;
 using FinanceApp.Core.Requests.Categories;
 using FinanceApp.Core.Responses;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FinanceApp.Api.Endpoints.Categories;
 
@@ -18,11 +19,12 @@ public class GetAllCategoriesEndpoint : IEndpoint
             .WithDescription("Retrive all categories")
             .WithOrder(4);
     public static async Task<IResult> HandleAsync(
-        ICategoryHandler handler, [FromQuery] int pageNumber = Configuration.DefaultPageNumber, [FromQuery] int pageSize=Configuration.DefaultPageSize)
+        ClaimsPrincipal user ,ICategoryHandler handler, [FromQuery] int pageNumber = Configuration.DefaultPageNumber, [FromQuery] int pageSize=Configuration.DefaultPageSize)
     {
 
         var request = new GetAllCategoriesRequest
         {
+            UserId = user.Identity?.Name ?? string.Empty,
             PageNumber = pageNumber,
             PageSize = pageSize,
         };

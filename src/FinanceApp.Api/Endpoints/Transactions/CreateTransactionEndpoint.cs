@@ -1,10 +1,12 @@
 ﻿
 
 using FinanceApp.Api.Common.Api;
+using FinanceApp.Api.Models;
 using FinanceApp.Core;
 using FinanceApp.Core.Handlers;
 using FinanceApp.Core.Requests.Transactions;
 using FinanceApp.Core.Responses;
+using System.Security.Claims;
 
 namespace FinanceApp.Api.Endpoints.Transactions;
 
@@ -18,9 +20,9 @@ public class CreateTransactionEndpoint : IEndpoint
     .WithOrder(1);
 
 
-    public static async Task<IResult> HandleAsync(ITransactionHandler handler, CreateTransactionRequest request)
+    public static async Task<IResult> HandleAsync(ClaimsPrincipal user, ITransactionHandler handler, CreateTransactionRequest request)
     {
-        request.UserId = "luan@gmail.com";
+        request.UserId = user.Identity?.Name ?? string.Empty;
 
         var response = await handler.CreateAsync(request);
 

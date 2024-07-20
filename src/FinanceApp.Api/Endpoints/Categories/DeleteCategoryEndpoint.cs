@@ -3,6 +3,7 @@ using FinanceApp.Core;
 using FinanceApp.Core.Handlers;
 using FinanceApp.Core.Requests.Categories;
 using FinanceApp.Core.Responses;
+using System.Security.Claims;
 
 namespace FinanceApp.Api.Endpoints.Categories;
 
@@ -15,11 +16,11 @@ public class DeleteCategoryEndpoint : IEndpoint
             .WithDescription("Deletion of a category")
             .WithOrder(3)
             .Produces<Response<Category?>>();
-    public static async Task<IResult> HandleAsync(ICategoryHandler handler, long id)
+    public static async Task<IResult> HandleAsync(ClaimsPrincipal user, ICategoryHandler handler, long id)
     {
         var request = new DeleteCategoryRequest
         {
-            UserId = "luan@gmail.com",
+            UserId = user.Identity?.Name ?? string.Empty,
             Id = id
         };
 

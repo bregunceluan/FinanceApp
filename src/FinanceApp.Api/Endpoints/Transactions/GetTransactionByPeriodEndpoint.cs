@@ -4,6 +4,7 @@ using FinanceApp.Core.Libraries.Consts;
 using FinanceApp.Core.Requests.Transactions;
 using FinanceApp.Core.Responses;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Transactions;
 
 namespace FinanceApp.Api.Endpoints.Transactions;
@@ -18,6 +19,7 @@ public class GetTransactionByPeriodEndpoint : IEndpoint
     .WithOrder(5);
 
     public static async Task<IResult> HandleAsync(
+        ClaimsPrincipal user,
         ITransactionHandler handler, 
         [FromQuery] DateTime? startDate = null,
         [FromQuery] DateTime? endDate = null, 
@@ -26,7 +28,7 @@ public class GetTransactionByPeriodEndpoint : IEndpoint
     {
         var request = new GetTransactionByPeriodRequest()
         {
-            UserId = "luan@gmail.com",
+            UserId = user.Identity?.Name ?? string.Empty,
             StartDate = startDate,
             EndDate = endDate,
             PageNumber = pageNumber,

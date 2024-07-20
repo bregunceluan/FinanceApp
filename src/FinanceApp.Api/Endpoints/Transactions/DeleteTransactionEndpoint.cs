@@ -5,6 +5,7 @@ using FinanceApp.Core.Requests.Categories;
 using FinanceApp.Core.Requests.Transactions;
 using FinanceApp.Core.Responses;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FinanceApp.Api.Endpoints.Transactions;
 
@@ -18,11 +19,11 @@ public class DeleteTransactionEndpoint : IEndpoint
     .WithOrder(3)
     .Produces<Response<Transaction?>>();
 
-    public static async Task<IResult> HandleAsync(ITransactionHandler handler, long id)
+    public static async Task<IResult> HandleAsync(ClaimsPrincipal user, ITransactionHandler handler, long id)
     {
         var request = new DeleteTransactionRequest
         {
-            UserId = "luan@gmail.com",
+            UserId = user.Identity?.Name ?? string.Empty,
             Id = id
         };
 

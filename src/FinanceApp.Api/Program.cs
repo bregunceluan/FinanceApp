@@ -11,7 +11,10 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme).AddCookie();
+builder.Services
+    .AddAuthentication(IdentityConstants.ApplicationScheme)
+    .AddIdentityCookies();
+
 builder.Services.AddAuthorization();
 
 var connectionStr = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
@@ -49,5 +52,6 @@ app.UseSwaggerUI(s =>
 });
 
 app.MapEndpoints();
+
 
 app.Run();
