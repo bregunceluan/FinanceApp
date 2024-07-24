@@ -8,8 +8,19 @@ using FinanceApp.Core.Requests.Categories;
 using FinanceApp.Core.Responses;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+var isProduction = builder.Environment.IsProduction();
+
+string[]? allowedOrigins = builder.Configuration.GetSection("Cors").Get<string[]>();
+
+if (isProduction)
+{
+    builder.Configuration.AddEnvironmentVariables("FinanceApp__");
+}
 
 builder.Services
     .AddAuthentication(IdentityConstants.ApplicationScheme)
@@ -18,6 +29,7 @@ builder.Services
 builder.Services.AddAuthorization();
 
 var connectionStr = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
+
 builder.Services.AddDbContext<AppDbContext>(x =>
 {
     x.UseNpgsql(connectionStr);
@@ -28,6 +40,17 @@ builder.Services
     .AddRoles<IdentityRole<long>>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddApiEndpoints();
+
+
+if (isProduction)
+{
+    builder.Services.AddCors(c =>
+    {
+        c.AddPolicy(AllowedOriginsName, p => p.WithOrigins(allowedOrigins)
+        .AllowAnyHeader()
+        .AllowAnyMethod());
+    });
+}
 
 builder.Services.AddTransient<ICategoryHandler, CategoryHandler>();
 builder.Services.AddTransient<ITransactionHandler, TransactionHandler>();
@@ -40,6 +63,11 @@ builder.Services.AddSwaggerGen(s =>
 
 
 var app = builder.Build();
+
+if (isProduction)
+{
+    app.UseCors("AllowedOrigins");
+}
 
 app.UseAuthentication();
 app.UseAuthorization();

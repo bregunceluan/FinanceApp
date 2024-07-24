@@ -3,6 +3,8 @@ using FinanceApp.Core.Handlers;
 using FinanceApp.Core.Requests.Categories;
 using FinanceApp.Core.Responses;
 using FinanceApp.Core;
+using System.Security.Claims;
+using FinanceApp.Api.Models;
 
 namespace FinanceApp.Api.Endpoints.Categories
 {
@@ -16,8 +18,11 @@ namespace FinanceApp.Api.Endpoints.Categories
             .WithDescription("Creation of a new category.")
             .WithOrder(1);
 
-        public static async Task<IResult> HandleAsync(ICategoryHandler handler,CreateCategoryRequest request)
+        public static async Task<IResult> HandleAsync(ClaimsPrincipal user, ICategoryHandler handler,CreateCategoryRequest request)
         {
+            request.UserId = user.Identity?.Name ?? string.Empty;
+
+
             var response = await handler.CreateAsync(request);
 
             if (response.IsSuccess)
