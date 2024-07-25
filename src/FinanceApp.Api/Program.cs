@@ -1,14 +1,19 @@
+using FinanceApp.Api;
 using FinanceApp.Api.Data;
 using FinanceApp.Api.Endpoints;
 using FinanceApp.Api.Handlers;
 using FinanceApp.Api.Models;
+using FinanceApp.Api.Properties.Options;
+using FinanceApp.Api.Services;
 using FinanceApp.Core;
 using FinanceApp.Core.Handlers;
 using FinanceApp.Core.Requests.Categories;
 using FinanceApp.Core.Responses;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +30,9 @@ if (isProduction)
 builder.Services
     .AddAuthentication(IdentityConstants.ApplicationScheme)
     .AddIdentityCookies();
+
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.Configure<SendGridOptions>(builder.Configuration);
 
 builder.Services.AddAuthorization();
 
@@ -46,7 +54,7 @@ if (isProduction)
 {
     builder.Services.AddCors(c =>
     {
-        c.AddPolicy(AllowedOriginsName, p => p.WithOrigins(allowedOrigins)
+        c.AddPolicy("AllowedOrigins", p => p.WithOrigins(allowedOrigins)
         .AllowAnyHeader()
         .AllowAnyMethod());
     });
@@ -68,6 +76,7 @@ if (isProduction)
 {
     app.UseCors("AllowedOrigins");
 }
+
 
 app.UseAuthentication();
 app.UseAuthorization();
