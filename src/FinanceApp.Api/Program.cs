@@ -54,7 +54,7 @@ if (isProduction)
 {
     builder.Services.AddCors(c =>
     {
-        c.AddPolicy("AllowedOrigins", p => p.WithOrigins(allowedOrigins)
+        c.AddPolicy("AllowedOrigins", p => p.WithOrigins(   )
         .AllowAnyHeader()
         .AllowAnyMethod());
     });

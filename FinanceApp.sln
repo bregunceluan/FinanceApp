@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B5745848-B05
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceApp.Core", "src\FinanceApp.Core\FinanceApp.Core.csproj", "{26FDA30A-532C-4187-AAAA-B87EA3EA95DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceApp.Api", "src\FinanceApp.Api\FinanceApp.Api.csproj", "{3413B8F3-9D41-4C82-8789-E09E5C537742}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceApp.Api", "src\FinanceApp.Api\FinanceApp.Api.csproj", "{3413B8F3-9D41-4C82-8789-E09E5C537742}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
