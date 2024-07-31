@@ -25,7 +25,7 @@ public class GetTransactionByPeriodEndpoint : IEndpoint
         [FromQuery] DateTime? endDate = null, 
         [FromQuery] int pageNumber = Configuration.DefaultPageNumber,
         [FromQuery] int pageSize = Configuration.DefaultPageSize)
-    {
+    {   
         var request = new GetTransactionByPeriodRequest()
         {
             UserId = user.Identity?.Name ?? string.Empty,

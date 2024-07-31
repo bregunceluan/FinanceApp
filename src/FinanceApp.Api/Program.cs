@@ -49,6 +49,7 @@ builder.Services
     .AddEntityFrameworkStores<AppDbContext>()
     .AddApiEndpoints();
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 if (isProduction)
 {

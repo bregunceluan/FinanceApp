@@ -24,7 +24,7 @@ public class TransactionHandler(AppDbContext context) : ITransactionHandler
                 PaidOrReceivedAt = request.PaidOrReceivedAt,
                 CreatedAt = DateTime.UtcNow,
                 Title = request.Title,
-
+                UserId = request.UserId,
             };
 
             await context.Transactions.AddAsync(transaction);
@@ -105,6 +105,7 @@ public class TransactionHandler(AppDbContext context) : ITransactionHandler
             var transactions = await query
                 .Skip(request.PageSize * (request.PageNumber - 1))
                 .Take(request.PageSize)
+                .Include(e=>e.Category)
                 .ToListAsync();
 
             var count = transactions.Count();
