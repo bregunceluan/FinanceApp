@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\FinanceApp.Api\FinanceApp.Api.csproj" />
+    <ProjectReference Include="..\..\src\FinanceApp.Api\FinanceApp.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>
