@@ -1,5 +1,6 @@
 ﻿using FinanceApp.Api.Common.Api;
 using FinanceApp.Api.Endpoints.Categories;
+using FinanceApp.Api.Endpoints.General;
 using FinanceApp.Api.Endpoints.Identity;
 using FinanceApp.Api.Endpoints.Transactions;
 using FinanceApp.Api.Models;
@@ -38,6 +39,11 @@ public static class Endpoint
             .MapEndpoint<LogoutEndpoint>()
             .MapEndpoint<GetRolesEndpoint>()
             .MapIdentityApi<User>();
+
+        app.MapGroup("health")
+            .WithTags("General")
+            .MapEndpoint<HealthEndpoint>();
+
     }
 
     public static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder builder) where TEndpoint : IEndpoint
