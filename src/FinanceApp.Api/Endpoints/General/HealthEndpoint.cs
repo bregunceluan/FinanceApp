@@ -13,8 +13,15 @@ public class HealthEndpoint : IEndpoint
 
     public static  async Task<IResult> HandleAsync(AppDbContext context)
     {
+        var res = await context.Database.CanConnectAsync();
 
-        return Results.Ok("");
+        return Results.Ok(
+            new
+            {
+                Api = "API is up and happier than a dog with two tails.",
+                Db = !res ? "Database connection failure. The database went out for lunch." : "Database is up and running like a caffeinated squirrel."
+            });
+            
     }
 }
 

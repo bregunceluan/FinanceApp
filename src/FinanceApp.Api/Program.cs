@@ -12,6 +12,7 @@ using FinanceApp.Core.Responses;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
@@ -30,6 +31,8 @@ if (isProduction)
 builder.Services
     .AddAuthentication(IdentityConstants.ApplicationScheme)
     .AddIdentityCookies();
+
+builder.Services.AddHealthChecks();
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<SendGridOptions>(builder.Configuration);
@@ -91,5 +94,6 @@ app.UseSwaggerUI(s =>
 
 app.MapEndpoints();
 
+app.MapHealthChecks("/healthz");
 
 app.Run();
