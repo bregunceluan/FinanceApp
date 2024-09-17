@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceApp.Api", "src\Finan
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8608270D-0F8C-49A7-A204-F37B18A079F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceApp.Api.Tests.Integration", "tests\FinanceApp.Api.Tests.Integration\FinanceApp.Api.Tests.Integration.csproj", "{828FBEDC-54E2-4475-9F75-9D94B9F1D038}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceApp.Api.Tests.Integration", "tests\FinanceApp.Api.Tests.Integration\FinanceApp.Api.Tests.Integration.csproj", "{828FBEDC-54E2-4475-9F75-9D94B9F1D038}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

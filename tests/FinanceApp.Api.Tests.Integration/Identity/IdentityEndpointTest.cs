@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace FinanceApp.Api.Tests.Integration.Identity;
 
-public class IdentityEndpointTest : IClassFixture<FinanceApiFactory>
+public class IdentityEndpointTest
 {
     private readonly Faker<User> _faker = new Faker<User>()
         .RuleFor(u => u.Email, faker => faker.Person.Email)

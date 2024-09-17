@@ -3,10 +3,12 @@
     <v-main>
       <router-view />
     </v-main>
-    <Sidebar></Sidebar>
+    <Sidebar v-if="!$route.path.includes('login')"></Sidebar>
   </v-app>
 </template>
 
 <script setup>
-  //
+
 </script>
+
+

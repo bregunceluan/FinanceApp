@@ -37,6 +37,13 @@ builder.Services.AddHealthChecks();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<SendGridOptions>(builder.Configuration);
 
+builder.Services.ConfigureApplicationCookie(opt =>
+{
+    opt.Cookie.Name = "FinanceAppCookie";
+    opt.ExpireTimeSpan = TimeSpan.FromMinutes(300);
+    opt.Cookie.SameSite = SameSiteMode.None;
+});
+
 builder.Services.AddAuthorization();
 
 var connectionStr = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
@@ -54,12 +61,14 @@ builder.Services
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-if (isProduction)
+if (!isProduction)
 {
     builder.Services.AddCors(c =>
     {
-        c.AddPolicy("AllowedOrigins", p => p.WithOrigins(   )
+        c.AddPolicy("AllowedOrigins", p =>
+        p.WithOrigins(allowedOrigins!)
         .AllowAnyHeader()
+        .AllowCredentials()
         .AllowAnyMethod());
     });
 }
@@ -76,7 +85,7 @@ builder.Services.AddSwaggerGen(s =>
 
 var app = builder.Build();
 
-if (isProduction)
+if (!isProduction)
 {
     app.UseCors("AllowedOrigins");
 }

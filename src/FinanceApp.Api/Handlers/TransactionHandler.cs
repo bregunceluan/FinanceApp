@@ -108,14 +108,16 @@ public class TransactionHandler(AppDbContext context) : ITransactionHandler
                 .Include(e=>e.Category)
                 .ToListAsync();
 
-            var count = transactions.Count();
+            var count = await query.CountAsync();
+
+            var countD = (int)Math.Ceiling( (double)(count - request.PageNumber) / request.PageSize);
 
             if (transactions is null)
             {
                 return new PagedResponse<List<Transaction>?>(null, 404, "Transaction not found.");
             }
 
-            return new PagedResponse<List<Transaction>?>(transactions,201, transactions.Any() ? "Transactions founded" : "Wasn't found any transaction at this date." );
+            return new PagedResponse<List<Transaction>?>(transactions, count,countD);
 
         }
         catch (DateTimeException)

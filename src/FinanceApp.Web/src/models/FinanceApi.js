@@ -1,20 +1,34 @@
-import Transaction from '../models/Transaction.js';
+import Transaction from './Transaction.js';
 
-class FinanceApiAPP {
-  constructor(baseUrl) {
-    this.baseUrl = baseUrl;
-  }
+let baseUrl = "http://localhost:5252/v1"
 
-  async fetchTransactions(startDate,endDate,pageNumber,pageSize=30) {
-    try {
-      const response = await fetch(`${this.baseUrl}/transactions?pageNumber=${pageNumber}&pageSize=${pageSize}`);
-      const data = await response.json();
-      return data.data.map(transaction => new Transaction(transaction));
-    } catch (error) {
-      console.error('Error fetching transactions:', error);
-      throw error;
-    }
+class PaginatedResponse{
+  constructor(currentPage, totalPages, pageSize, totalCount,data) {
+    this.currentPage = currentPage;
+    this.totalPages = totalPages;
+    this.pageSize = pageSize;
+    this.totalCount = totalCount;
+    this.data = data;
   }
 }
 
-export default ApiService;
+async function getTransactionsByPeriod(startDate, endDate, pageNumber, pageSize){
+  try {
+    if(startDate == null) startDate = "2024-07-01"
+    if(endDate == null) endDate = "2024-07-31"
+    const response = await fetch(`http://localhost:5252/v1/transactions?pageNumber=${pageNumber}&pageSize=${pageSize}`,{
+      method:'GET',
+      credentials:'include'
+    });
+    debugger
+    const data = await response.json();
+    const allTransactions = data.data.map(transaction => new Transaction(transaction));
+    return new PaginatedResponse(data.currentPage,data.totalPages,data.pageSize,data.totalCount,allTransactions);    
+  } catch (error) {
+    console.error('Error fetching transactions:', error);
+    throw error;
+  }
+}
+
+export default getTransactionsByPeriod
+

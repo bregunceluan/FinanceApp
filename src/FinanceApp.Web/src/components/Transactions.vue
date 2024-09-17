@@ -23,6 +23,10 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
+import getTransactionsByPeriod from '@/models/FinanceApi'
+import login from '@/models/authFunctions'
+
 
 const headers = [
 {title:"Category", key:"category"},
@@ -31,6 +35,14 @@ const headers = [
 {title:"Paid/ReceivedAt", key:"paidReceivedAt"},
 {title:"Amount", key:"amount"},   
 ]
+
+onMounted(async () =>{
+    debugger
+
+    await login()
+    let transactions = await getTransactionsByPeriod("2024-07-01","2024-07-31",1,3)
+})
+
 
 const currentPage = ref(1);
 const pages = 5
