@@ -16,10 +16,12 @@ async function getTransactionsByPeriod(startDate, endDate, pageNumber, pageSize)
   try {
     if(startDate == null) startDate = "2024-07-01"
     if(endDate == null) endDate = "2024-07-31"
+
     const response = await fetch(`http://localhost:5252/v1/transactions?pageNumber=${pageNumber}&pageSize=${pageSize}`,{
       method:'GET',
       credentials:'include'
     });
+    
     debugger
     const data = await response.json();
     const allTransactions = data.data.map(transaction => new Transaction(transaction));
